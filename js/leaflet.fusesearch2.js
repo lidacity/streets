@@ -1,5 +1,5 @@
-﻿
-// From http://www.tutorialspoint.com/javascript/array_map.htm
+﻿// From http://www.tutorialspoint.com/javascript/array_map.htm
+
 if (!Array.prototype.map)
 {
   Array.prototype.map = function(fun /*, thisp*/)
@@ -33,7 +33,7 @@ L.Control.FuseSearch = L.Control.extend({
         threshold: 0.5,
         maxResultLength: null,
         showResultFct: null,
-        showInvisibleFeatures: true
+        showInvisibleStreets: true
     },
     
     initialize: function(options) {
@@ -95,7 +95,7 @@ L.Control.FuseSearch = L.Control.extend({
         this._input.placeholder = this.options.placeholder;
         this._input.onkeyup = function(evt) {
             var searchString = evt.currentTarget.value;
-            _this.searchFeatures(searchString);
+            _this.searchStreets(searchString);
         };
 
         // Close button
@@ -125,81 +125,14 @@ L.Control.FuseSearch = L.Control.extend({
         L.DomEvent.off(this._closeButton, 'click', this.hidePanel);
     },
     
-    /*_createPanel: function(map) {
-        var _this = this;
-
-        // Create the search panel
-        var mapContainer = map.getContainer();
-        var className = 'leaflet-fusesearch-panel',
-            pane = this._panel = L.DomUtil.create('div', className, mapContainer);
-        
-        // Make sure we don't drag the map when we interact with the content
-        var stop = L.DomEvent.stopPropagation;
-        L.DomEvent.on(pane, 'click', stop)
-                .on(pane, 'dblclick', stop)
-                .on(pane, 'mousedown', stop)
-                .on(pane, 'touchstart', stop)
-                .on(pane, 'mousewheel', stop)
-                .on(pane, 'MozMousePixelScroll', stop);
-
-        // place the pane on the same side as the control
-        if (this._panelOnLeftSide) {
-            L.DomUtil.addClass(pane, 'left');
-        } else {
-            L.DomUtil.addClass(pane, 'right');
-        }
-
-        // Intermediate container to get the box sizing right
-        var container = L.DomUtil.create('div', 'content', pane);
-        
-        // Search image and input field
-        L.DomUtil.create('img', 'search-image', container);
-        this._input = L.DomUtil.create('input', 'search-input', container);
-        this._input.maxLength = 30;
-        this._input.placeholder = this.options.placeholder;
-        this._input.onkeyup = function(evt) {
-            var searchString = evt.currentTarget.value;
-            _this.searchFeatures(searchString);
-        };
-
-        // Close button
-        var close = this._closeButton = L.DomUtil.create('a', 'close', container);
-        close.innerHTML = '&times;';
-        L.DomEvent.on(close, 'click', this.hidePanel, this);
-        
-        // Where the result will be listed
-        this._resultList = L.DomUtil.create('div', 'result-list', container); 
-        
-        return pane;
-    },*/
-    
-    /*_clearPanel: function(map) {
-
-        // Unregister event handlers
-        var stop = L.DomEvent.stopPropagation;
-        L.DomEvent.off(this._panel, 'click', stop)
-                  .off(this._panel, 'dblclick', stop)
-                  .off(this._panel, 'mousedown', stop)
-                  .off(this._panel, 'touchstart', stop)
-                  .off(this._panel, 'mousewheel', stop)
-                  .off(this._panel, 'MozMousePixelScroll', stop);
-
-        L.DomEvent.off(this._closeButton, 'click', this.hidePanel);
-        
-        var mapContainer = map.getContainer();
-        mapContainer.removeChild(this._panel);
-        
-        this._panel = null;
-    },*/
-    
     _setEventListeners : function() {
         var that = this;
         var input = this._input;
         this._map.addEventListener('overlayadd', function() {
-            that.searchFeatures(input.value);
+            that.searchStreets(input.value);
         });
         this._map.addEventListener('overlayremove', function() {
-            that.searchFeatures(input.value);
+            that.searchStreets(input.value);
         });
     },
     
@@ -223,8 +156,8 @@ L.Control.FuseSearch = L.Control.extend({
             L.DomUtil.addClass(this._closeButton, 'visible');
             L.DomUtil.addClass(this._resultList, 'visible');
             this._input.select();
-            // Search again as visibility of features might have changed
-            this.searchFeatures(this._input.value);
+            // Search again as visibility of streets might have changed
+            this.searchStreets(this._input.value);
         }
     },
 
@@ -255,10 +188,10 @@ L.Control.FuseSearch = L.Control.extend({
         }
     },
 
-    indexFeatures: function(jsonFeatures, keys) {
+    indexStreets: function(jsonStreets, keys) {
 
         this._keys = keys;
-        var properties = jsonFeatures.map(function(feature) {
+        var properties = jsonStreets.map(function(feature) {
             // Keep track of the original feature
             feature.properties._feature = feature;
             return feature.properties;
@@ -273,7 +206,7 @@ L.Control.FuseSearch = L.Control.extend({
         this._fuseIndex = new Fuse(properties, options);
     },
     
-    searchFeatures: function(string) {
+    searchStreets: function(string) {
         
         var result = this._fuseIndex.search(string);
 
@@ -288,7 +221,7 @@ L.Control.FuseSearch = L.Control.extend({
             var feature = props._feature;
             //var popup = this._getFeaturePopupIfVisible(feature);
             
-            if (/*undefined !== popup || */!this.options.showInvisibleFeatures) {
+            if (/*undefined !== popup || */!this.options.showInvisibleStreets) {
                 this.createResultItem(props, resultList);//, popup);
                 if (undefined !== max && ++num === max)
                     break;
@@ -336,24 +269,6 @@ L.Control.FuseSearch = L.Control.extend({
 
         return resultItem;
     }//,
- /*   
-    _panAndPopup : function(feature, popup) {
-        // Temporarily adapt the map padding so that the popup is not hidden by the search pane
-        if (this._panelOnLeftSide) {
-            var oldPadding = popup.options.autoPanPaddingTopLeft;
-            var newPadding = new L.Point(- this.getOffset(), 10);
-            popup.options.autoPanPaddingTopLeft = newPadding;
-            feature.layer.openPopup();
-            popup.options.autoPanPaddingTopLeft = oldPadding;
-        } else {
-            var oldPadding = popup.options.autoPanPaddingBottomRight;
-            var newPadding = new L.Point(this.getOffset(), 10);
-            popup.options.autoPanPaddingBottomRight = newPadding;
-            feature.layer.openPopup();
-            popup.options.autoPanPaddingBottomRight = oldPadding;
-        }
-    }
- */
 });
 
 L.control.fuseSearch = function(options) {
