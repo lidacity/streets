@@ -232,7 +232,8 @@ L.Control.FuseSearch = L.Control.extend({
         resultItem.onclick = function() {
             _this.hidePanel();
             _this._map.fitBounds(feature.layer.getBounds(), {'duration': 0.95});
-            feature.layer.openPopup();
+            if (this.map != null)
+             feature.layer.openPopup();
             //console.log(feature.layer.getPopup()._content)
         };
 

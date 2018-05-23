@@ -82,6 +82,12 @@ function Slice(Text)
   return Text;
 }
 
+function DivPopup(Text)
+{
+ var Wiki = document.getElementById('wiki');
+ Wiki.innerHTML = Text;
+ 
+}
 function onPopupOpenClick(e)
 {
  var queryWikipediaOption = {
@@ -89,7 +95,6 @@ function onPopupOpenClick(e)
   format: 'json',
   prop: 'pageimages|extracts',
   pithumbsize: '200',
-  //exsentences: '2',
   exintro: '',
   explaintext: '',
   formatversion: '2',
@@ -99,15 +104,17 @@ function onPopupOpenClick(e)
  queryWikipedia(function (x) {
   var Result = x.query.pages[0];
   //console.log('mw', Result);
-  var Text = document.getElementById('wiki');
   if (Result.thumbnail != null)
    Img = "<img alt='" + Result.title + "' src='" + Result.thumbnail.source + "' />";
   else
    Img = "";
+  //
+  var Text;
   if (Result.extract != "")
-   Text.innerHTML = Img + "<br />" + Slice(Result.extract);
+   Text = Img + "<br />" + Slice(Result.extract);
   else
-   Text.innerHTML = "<font color='#DDD'><del>в wiki отсутствует информация</del></font>";
+   Text = "<font color='#DDD'><del>в wiki отсутствует информация</del></font>";
+  setTimeout(DivPopup, 200, Text);
  });
 
 }
@@ -166,5 +173,5 @@ var OptionsFuse = {
 
 var fuseSearchCtrl = L.control.fuseSearch(OptionsFuse);
 Map.addControl(fuseSearchCtrl);
-//fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description']);
-fuseSearchCtrl.indexFeatures(StreetsData.features, ['popupContent']);
+fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description']);
+//fuseSearchCtrl.indexFeatures(StreetsData.features, ['popupContent']);

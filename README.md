@@ -3,16 +3,14 @@
 Город Лида. Их именами названы улицы
 Проект преобразован и оптимизирован для города Лиды, Беларусь.
 
-##Использованы различные данные, а именно:
+###Использованы различные данные, а именно:
 #### как первоисточник 
 * http://habrahabr.ru/post/260893/
 * https://kogor.github.io//Streets-of-Valour-and-Victory/
 * https://github.com/KoGor/Streets-of-Valour-and-Victory
 #### как изучение
-* https://docs.google.com/spreadsheets/d/1Uu7Ff1goNTzMB5ZT5qz5rWbHyad76I0WcuB7dtGkNrw/edit#gid=832950027
-* http://overpass-turbo.eu/s/9Gm
 * http://news.tut.by/society/398404.html
-* https://habrahabr.ru/sandbox/69352/
+* https://leafletjs.com/
 * https://www.mediawiki.org/wiki/API:Main_page/ru
 * https://ru.wikipedia.org/wiki/Служебная:ApiSandbox#action=query&format=json&meta=siteinfo&siprop=namespaces
 #### как основные данные
