@@ -30,6 +30,14 @@ var Map = L.map('map', OptionMap);
 
 //
 
+var AboutPopup = L.popup().setContent("<center><b>Их именами названы улицы</b><br />г. Лида, Беларусь<br /><p><img src='favicon.png' /></p></center><br /><br />&copy; <a href='mailto:dzmitry@lidacity.by'>dzmitry@lidacity.by</a>, 2005, 2016");
+
+L.easyButton("&starf;", function(btn, map){
+ AboutPopup.setLatLng(map.getCenter()).openOn(map);
+}).addTo(Map);
+
+//
+
 function GetStyle(feature)
 {
   var Zoom = Map.getZoom();
@@ -175,3 +183,4 @@ var fuseSearchCtrl = L.control.fuseSearch(OptionsFuse);
 Map.addControl(fuseSearchCtrl);
 fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description']);
 //fuseSearchCtrl.indexFeatures(StreetsData.features, ['popupContent']);
+
