@@ -79,10 +79,13 @@ function JsonEachFeature(feature, layer)
  if (feature.properties[Lang].Description != null)
  {
   Name = "<i>" + feature.properties[Lang].Description + "</i>:<br/ >";
-  if (feature.properties[Lang].SiteLink == null)
-   Name += "<font color='#DDD'><del>" + NotFound + "</del></font>";
-  else
+  if (feature.properties[Lang].SiteLink != null)
    Name += "<a href='https://" + Lang + ".wikipedia.org/wiki/" + feature.properties[Lang].SiteLink + "' target='_blank' class='map-popup-link'>" + feature.properties[Lang].Label + "</a>";
+  else if (feature.properties[Lang].Label != null)
+   Name += "<u>" + feature.properties[Lang].Label + "</u>"; 
+  else
+   Name += "<font color='#DDD'><del>" + NotFound + "</del></font>";
+  //
   Name += "<hr />";
  }
  //
