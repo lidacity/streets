@@ -66,7 +66,7 @@ function GetStyle(feature)
   Style.lineCap = "butt";
   Style.lineJoin = "round";
   Style.weight = Zoom - 9;
-  Style.opacity = (20 - Zoom) / 5;
+  Style.opacity = (20 - Zoom) / 10;
   return Style;
 }
 
@@ -87,10 +87,10 @@ function JsonEachFeature(feature, layer)
  }
  //
  var Note;
- if (feature.properties.Note == null)
+ if (feature.properties[Lang].Note == null)
   Note = "";
  else
-  Note = "<hr /><small>" + feature.properties.Note + "</small>";
+  Note = "<hr /><small>" + feature.properties[Lang].Note + "</small>";
  //
  layer.bindPopup(
   "<b>" + feature.properties[Lang].Name + "</b>" +

@@ -6,7 +6,7 @@
     "tilejson":"1.0.0", 
     "name":"My Map", 
     "description":"Made with Maperitive", 
-    "attribution":"© OpenStreetMap contributors. Tiles: CC-BY-SA 2.0\r\nMap data © OpenStreetMap contributors", 
+    "attribution":"Map data © OpenStreetMap contributors", 
     "tiles":
     [
         "tiles/{z}/{x}/{y}.png"
