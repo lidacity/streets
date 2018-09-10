@@ -2020,32 +2020,6 @@ rules
 				define
 					min-zoom : 10
 					max-zoom : 19
-			define
-				font-family : Tahoma
-				text-align-horizontal : center
-				text-align-vertical : center
-				text : ref
-				font-size : 8
-				font-weight : bold
-				text-color : black
-				text-halo-width : 0
-				shape : custom
-				shape-def : p:#333333;pw:2;f:#20f0a0;m:-20,-10;l:20,-10;l:20,10;l:-20,10;l:-20,-10;z
-				shield-padding-left : 3
-				shield-padding-right : 3
-				shield-padding-top : 5
-				shield-padding-bottom : 5
-//				font-size : 8
-//				text-color : #fcfcfb
-//				text-halo-width : 0
-//				shape : custom
-//				shape-def : p:#809bc0;pw:5;f:#809bc0;m:-10,-10;l:10,-10;a:10,10,10,10;l:-10,10;a:10,10,-10,-10;z;p:#fcfcfb;pw:2;m:-10,-10;l:10,-10;a:10,10,10,10;l:-10,10;a:10,10,-10,-10;z
-//				shield-padding-left : 5
-//				shield-padding-right : 5
-//				shield-padding-top : 7
-//				shield-padding-bottom : 7
-				shield-resize-mode : free
-//			draw : shield
 		elseif : *trunk*
 			define
 				min-zoom : 11
@@ -2084,23 +2058,6 @@ rules
 				define
 					min-zoom : 11
 					max-zoom : 19
-			define
-				font-family : Tahoma
-				text-align-horizontal : center
-				text-align-vertical : center
-				text : ref
-				font-size : 8
-				font-weight : bold
-				text-color : black
-				text-halo-width : 0
-				shape : custom
-				shape-def : p:#333333;pw:2;f:#eeee22;m:-20,-10;l:20,-10;l:20,10;l:-20,10;l:-20,-10;z
-				shield-padding-left : 3
-				shield-padding-right : 3
-				shield-padding-top : 5
-				shield-padding-bottom : 5
-				shield-resize-mode : free
-//			draw : shield
 		elseif : *primary*
 			define
 				min-zoom : 11
@@ -2139,25 +2096,6 @@ rules
 				define
 					min-zoom : 11
 					max-zoom : 19
-			define
-				font-family : Tahoma
-				text-align-horizontal : center
-				text-align-vertical : center
-				text : ref
-				font-size : 8
-				font-weight : bold
-				text-color : black
-				text-halo-width : 0
-				shape : custom
-//				shape-def : p:#eeee22;pw:3;f:#eeee22;m:-22,-11;l:22,-11;l:22,11;l:-22,11;l:-22,-11;z;p:#333333;pw:2;m:-20,-10;l:20,-10;l:20,10;l:-20,10;l:-20,-10;z
-				shape-def : p:#333333;pw:2;f:#eeee22;m:-20,-10;l:20,-10;l:20,10;l:-20,10;l:-20,-10;z
-				shield-padding-left : 3
-				shield-padding-right : 3
-				shield-padding-top : 5
-				shield-padding-bottom : 5
-				shield-resize-mode : free
-//			shield rendering suppressed, maperitive needs to handle this better
-//			draw : shield
 		elseif : *secondary*
 			define
 				min-zoom : 12
@@ -2194,24 +2132,6 @@ rules
 				define
 					min-zoom : 12
 					max-zoom : 19
-			define
-				font-family : Tahoma
-				text-align-horizontal : center
-				text-align-vertical : center
-				text : ref
-				font-size : 8
-				font-weight : bold
-				text-color : black
-				text-halo-width : 0
-				shape : custom
-				shape-def : p:#333333;pw:2;f:#eeeeee;m:-20,-10;l:20,-10;l:20,10;l:-20,10;l:-20,-10;z
-				shield-padding-left : 3
-				shield-padding-right : 3
-				shield-padding-top : 5
-				shield-padding-bottom : 5
-				shield-resize-mode : free
-//			shield rendering suppressed, maperitive needs to handle this better
-//			draw : shield
 			define
 				min-zoom : 13
 				max-zoom : 20
@@ -3227,14 +3147,14 @@ rules
 		draw : text
 	target: tree
 		define
-			min-zoom : 17
+			min-zoom : 18
 			icon-image : icons/ad47/tree+.png
 			text-color : green black 50%
 		draw : icon
 		draw : text
 		define
 			min-zoom : 15
-			max-zoom : 17
+			max-zoom : 18
 			icon-image : icons/ad47/tree2.png
 			icon-width : 15:4;16:6
 		draw : icon
@@ -3247,12 +3167,12 @@ rules
 		draw : fill
 		define
 			icon-image : icons/ad47/memorial.png
-			min-zoom : 14
+			min-zoom : 16
 			icon-width : 11
 		draw : icon
 		define
-			min-zoom : 16
-			font-size : 16:8;17:9
+			min-zoom : 17
+			font-size : 17:8;18:9
 			text-align-vertical : near
 			text-offset-vertical : 50%
 			text-color : red black 50%
@@ -3333,7 +3253,7 @@ rules
 	target: amenity bench 
 		define
 			icon-image : icons/SJJB/png/amenity_bench.n.32.png
-			min-zoom : 17
+			min-zoom : 18
 			icon-width : 12
 		draw : icon
 
@@ -3499,23 +3419,23 @@ rules
 //barriers
 	target : entrance
 		define
-			min-zoom : 16
+			min-zoom : 17
 			shape : square
-			shape-size : 16:1.2;17:2.6;18:3.7
+			shape-size : 17:1.2;18:2.6;19:3.7
 			line-width : 0
-			fill-color : black
+			fill-color : gray
 		for : entrance=main
 			define
-				min-zoom : 15
-				shape-size : 15:1.3;16:2.5;17:3.7;18:5
+				min-zoom : 16
+				shape-size : 16:1.3;17:2.5;18:3.7;19:5
 				line-width : 0
-				fill-color : black	
+				fill-color : gray
 		for : access=no OR access=private OR foot=no OR entrance=exit
 			define
 				fill-color : red
 		draw : shape
 		define
-			min-zoom : 17
+			min-zoom : 18
 			text : ref
 		draw : text
 		for : addr:flats
