@@ -63,7 +63,7 @@ def GetWikiData(Tag, Lang):
   Labels = Item['labels']
   SiteLinks = Item['sitelinks']
  else:
-  Labels = {}
+  Labels = { Lang: Tag.get("description:" + Lang), }
   SiteLinks = {}
  #
  Result['Label'] = Labels.get(Lang)

@@ -8,11 +8,7 @@ var OptionLayer = {
  noWrap: true,
 }
 
-//var Map = L.map('map').setView([53.90, 25.30], 13);
-//http://tile.openstreetmap.org/{z}/{x}/{y}.png
-//http://wiki.openstreetmap.org/wiki/Tiles#Graphical_Map_Tiles
-//L.tileLayer('https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', OptionLayer)
-//L.tileLayer.grayscale('https://tile.openstreetmap.org/{z}/{x}/{y}.png', OptionLayer)
+var Lang = Translate();
 
 var RU = L.tileLayer.grayscale('tiles.ru/{z}/{x}/{y}.png', OptionLayer);
 var BE = L.tileLayer.grayscale('tiles.be/{z}/{x}/{y}.png', OptionLayer);
@@ -49,7 +45,7 @@ Map.on('drag', function() { Map.panInsideBounds(Bounds, { animate: false }); });
 
 //
 
-var AboutPopup = L.popup().setContent("<center><b>" + About + "</b><br />" + Address + "<br /><p><img src='favicon.png' /></p></center><br /><br />&copy; <a href='mailto:dzmitry@lidacity.by'>dzmitry@lidacity.by</a>, 2005, 2016");
+var AboutPopup = L.popup().setContent("<center><b>" + _('About') + "</b><br />" + _('Address') + "<br /><p><img src='favicon.png' /></p></center><br /><br />&copy; <a href='mailto:dzmitry@lidacity.by'>dzmitry@lidacity.by</a>, 2005, 2016");
 
 L.easyButton("&starf;", function(btn, map){
  AboutPopup.setLatLng(map.getCenter()).openOn(map);
@@ -71,32 +67,40 @@ function GetStyle(feature)
 }
 
 
+function GetName(Properties)
+{
+ var Result = "";
+ if (!!Properties.Description)
+  Result = "<i>" + Properties.Description + "</i>:<br/ >";
+ if (!!Properties.SiteLink)
+  Result += "<a href='https://" + Lang + ".wikipedia.org/wiki/" + Properties.SiteLink + "' target='_blank' class='map-popup-link'>" + Properties.Label + "</a>";
+ else if (!!Properties.Label)
+  Result += "<u>" + Properties.Label + "</u>"; 
+ else
+  Result += "<font color='#DDD'><del>" + _('NotFound') + "</del></font>";
+ Result += "<hr />";
+ //
+ return Result;
+}
+
+function GetNote(Properties)
+{
+ var Result = "";
+ if (!!Properties.Note)
+  Result = "<hr /><small>" + Properties.Note + "</small>";
+ return Result;
+}
+
 function JsonEachFeature(feature, layer)
 {
  feature.layer = layer;
+ var Properties = feature.properties[Lang];
  //
- var Name = "";
- if (feature.properties[Lang].Description != null)
- {
-  Name = "<i>" + feature.properties[Lang].Description + "</i>:<br/ >";
-  if (feature.properties[Lang].SiteLink != null)
-   Name += "<a href='https://" + Lang + ".wikipedia.org/wiki/" + feature.properties[Lang].SiteLink + "' target='_blank' class='map-popup-link'>" + feature.properties[Lang].Label + "</a>";
-  else if (feature.properties[Lang].Label != null)
-   Name += "<u>" + feature.properties[Lang].Label + "</u>"; 
-  else
-   Name += "<font color='#DDD'><del>" + NotFound + "</del></font>";
-  //
-  Name += "<hr />";
- }
- //
- var Note;
- if (feature.properties[Lang].Note == null)
-  Note = "";
- else
-  Note = "<hr /><small>" + feature.properties[Lang].Note + "</small>";
+ var Name = GetName(Properties);
+ var Note = GetNote(Properties);
  //
  layer.bindPopup(
-  "<b>" + feature.properties[Lang].Name + "</b>" +
+  "<b>" + Properties.Name + "</b>" +
   "<hr width='300' />" +
   Name +
   "<div id='wiki'></div>" +
@@ -117,10 +121,22 @@ function DivPopup(Text)
 {
  var Wiki = document.getElementById('wiki');
  Wiki.innerHTML = Text;
- 
 }
+
 function onPopupOpenClick(e)
 {
+ var Properties = e.layer.feature.properties[Lang];
+ //
+ var Name = GetName(Properties);
+ var Note = GetNote(Properties);
+ //
+ e.layer.bindPopup(
+  "<b>" + Properties.Name + "</b>" +
+  "<hr width='300' />" +
+  Name +
+  "<div id='wiki'></div>" +
+  Note);
+ //
  var queryWikipediaOption = {
   action: 'query',
   format: 'json',
@@ -135,7 +151,7 @@ function onPopupOpenClick(e)
  queryWikipedia(function (x) {
   var Result = x.query.pages[0];
   //console.log('mw', Result);
-  if (Result.thumbnail != null)
+  if (!!Result.thumbnail)
    Img = "<img alt='" + Result.title + "' src='" + Result.thumbnail.source + "' />";
   else
    Img = "";
@@ -144,44 +160,30 @@ function onPopupOpenClick(e)
   if (!!Result.extract)
    Text = Img + "<br />" + Slice(Result.extract);
   else
-   Text = "<font color='#DDD'><del>" + NotWiki + "</del></font>";
+   Text = "<font color='#DDD'><del>" + _('NotWiki') + "</del></font>";
   setTimeout(DivPopup, 200, Text);
  });
 
 }
 
 
-function Pad(Num, Size=2)
-{
- var Result = ("0" + Num)
- return Result.substr(Result.length - Size);
-}
-
 
 var OptionStreetsLayer = {
  style: GetStyle,
- onEachFeature: JsonEachFeature
+ onEachFeature: JsonEachFeature,
 }
-
-/*
-var StreetsLayer00 = new L.geoJson(StreetsData00, OptionStreetsLayer);
-var StreetsLayer00 = new L.GeoJSON.AJAX('http://streets.lidacity.by/data/StreetsData.diagram00.geojson', OptionStreetsLayer);
-var StreetsLayer00 = new L.GeoJSON.AJAX('/data/StreetsData.diagram00.geojson', OptionStreetsLayer);
-StreetsLayer00.on('popupopen', onPopupOpenClick);
-var List00 = L.layerGroup([StreetsLayer00]).addTo(Map);*/
 
 var OverlayMaps = {};
 
 AllLayer = [];
 
-for (var i = 0; i <= 14; i++)
+for (var Diagram in StreetsStyle)
 {
- var Index = Pad(i);
- var Diagram = "diagram" + Index;
  var Layer = new L.GeoJSON.AJAX('data/StreetsData.' + Diagram + '.geojson', OptionStreetsLayer);
  AllLayer.push(Layer);
  OverlayMaps[StreetsStyle[Diagram].Description[Lang]] = L.layerGroup([Layer.on('popupopen', onPopupOpenClick)]).addTo(Map);
 }
+
 
 //var List = L.layerGroup([StreetsLayer00, StreetsLayer01, StreetsLayer02]);
 
@@ -199,6 +201,41 @@ function ZoomEnd()
 }
 
 Map.on('zoomend', ZoomEnd);
+
+
+function Translate()
+{
+ document.getElementById('MapHeader').innerHTML = "<strong>" + _('City') + "</strong>. " + _('About');
+ document.getElementById('MainHeader').innerHTML = _('City') + ". " + _('About');
+ return _.defaultLocale;
+}
+
+function Change(e)
+{
+ //console.log(LLL._overlaysList);
+ //var elements = document.getElementsByClassName('leaflet-control-layers-overlays');
+ //console.log(elements[0].childNodes);
+ //for (var Item in elements[0].childNodes)
+ // console.log(elements[0].childNodes[Item].innerText);
+ PreviousLocale = _.defaultLocale;
+ _.defaultLocale = Language[e.name];
+ Lang = Translate();
+ //
+ var Elements = document.getElementsByClassName('leaflet-control-layers-selector');
+ for (var Item in Elements)
+ {
+  var Element = Elements[Item].nextSibling;
+  if (!!Element)
+  {
+   var Text = Element.innerText.trim();
+   for (var Diagram in StreetsStyle)
+    if (StreetsStyle[Diagram].Description[PreviousLocale] == Text)
+     Elements[Item].nextSibling.innerText = " " + StreetsStyle[Diagram].Description[Lang];
+  }
+ }
+}
+
+Map.on('baselayerchange', Change);
 
 //
 
@@ -229,4 +266,3 @@ fuseSearchCtrl.indexFeatures(List, ['ru.Label', 'ru.Name', 'ru.Description']);
 fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description']);
 fuseSearchCtrl.indexFeatures(StreetsData.features, ['popupContent']);
 */
-
