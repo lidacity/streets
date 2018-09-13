@@ -10,9 +10,13 @@ var OptionLayer = {
 
 var Lang = Translate();
 
+var Host = "http://tiles.lidacity.by/";
+if (location.hostname == "localhost")
+ Host = "tiles.";
+
 var BaseMaps = {
- "Русский язык": L.tileLayer.grayscale('tiles.ru/{z}/{x}/{y}.png', OptionLayer),
- "Беларуская мова": L.tileLayer.grayscale('tiles.be/{z}/{x}/{y}.png', OptionLayer),
+ "Русский язык": L.tileLayer.grayscale(Host + 'ru/{z}/{x}/{y}.png', OptionLayer),
+ "Беларуская мова": L.tileLayer.grayscale(Host + 'be/{z}/{x}/{y}.png', OptionLayer),
 };
 
 var OptionMap = {
