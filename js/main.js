@@ -1,7 +1,7 @@
 // LidaCity, 2015-2016
 
 var OptionLayer = {
- attribution: ' © <a href="http://www.openstreetmap.org/copyright">Openstreetmap</a> | © <a href="http://streets.lidacity.by/">LidaCity</a>',
+ attribution: ' © <a href="http://openstreetmap.org/copyright">Openstreetmap</a> | © <a href="http://streets.lidacity.by/">LidaCity</a>',
  maxZoom: 18,
  minZoom: 11,
  maxBounds: [[53.80, 25.20], [54.00, 25.40]],
@@ -10,30 +10,15 @@ var OptionLayer = {
 
 var Lang = Translate();
 
-var RU = L.tileLayer.grayscale('tiles.ru/{z}/{x}/{y}.png', OptionLayer);
-var BE = L.tileLayer.grayscale('tiles.be/{z}/{x}/{y}.png', OptionLayer);
-
 var BaseMaps = {
- "Русский язык": RU,
- "Беларуская мова": BE
+ "Русский язык": L.tileLayer.grayscale('tiles.ru/{z}/{x}/{y}.png', OptionLayer),
+ "Беларуская мова": L.tileLayer.grayscale('tiles.be/{z}/{x}/{y}.png', OptionLayer),
 };
-
-switch (Lang)
-{
- case 'ru':
-  Layer = RU;
-  break;
- case 'be':
-  Layer = BE;
-  break;
- default:
-  Layer = RU;
-}
 
 var OptionMap = {
  center: [53.90, 25.30],
  zoom: 13,
- layers: [Layer],
+ layers: [BaseMaps[_('Language')]],
  fadeAnimation: false,
 }
 
@@ -46,10 +31,7 @@ Map.on('drag', function() { Map.panInsideBounds(Bounds, { animate: false }); });
 //
 
 var AboutPopup = L.popup().setContent("<center><b>" + _('About') + "</b><br />" + _('Address') + "<br /><p><img src='favicon.png' /></p></center><br /><br />&copy; <a href='mailto:dzmitry@lidacity.by'>dzmitry@lidacity.by</a>, 2005, 2016");
-
-L.easyButton("&starf;", function(btn, map){
- AboutPopup.setLatLng(map.getCenter()).openOn(map);
-}).addTo(Map);
+L.easyButton("&starf;", function(btn, map) { AboutPopup.setLatLng(map.getCenter()).openOn(map); }).addTo(Map);
 
 //
 
@@ -93,18 +75,14 @@ function GetNote(Properties)
 
 function JsonEachFeature(feature, layer)
 {
- feature.layer = layer;
  var Properties = feature.properties[Lang];
- //
- var Name = GetName(Properties);
- var Note = GetNote(Properties);
  //
  layer.bindPopup(
   "<b>" + Properties.Name + "</b>" +
   "<hr width='300' />" +
-  Name +
+  GetName(Properties) +
   "<div id='wiki'></div>" +
-  Note);
+  GetNote(Properties));
 }
 
 
@@ -117,25 +95,16 @@ function Slice(Text)
   return Text;
 }
 
-function DivPopup(Text)
-{
- var Wiki = document.getElementById('wiki');
- Wiki.innerHTML = Text;
-}
-
 function onPopupOpenClick(e)
 {
  var Properties = e.layer.feature.properties[Lang];
  //
- var Name = GetName(Properties);
- var Note = GetNote(Properties);
- //
  e.layer.bindPopup(
   "<b>" + Properties.Name + "</b>" +
   "<hr width='300' />" +
-  Name +
+  GetName(Properties) +
   "<div id='wiki'></div>" +
-  Note);
+  GetNote(Properties));
  //
  var queryWikipediaOption = {
   action: 'query',
@@ -161,11 +130,9 @@ function onPopupOpenClick(e)
    Text = Img + "<br />" + Slice(Result.extract);
   else
    Text = "<font color='#DDD'><del>" + _('NotWiki') + "</del></font>";
-  setTimeout(DivPopup, 200, Text);
+  setTimeout(function (Text) { document.getElementById('wiki').innerHTML = Text; }, 200, Text);
  });
-
 }
-
 
 
 var OptionStreetsLayer = {
@@ -174,23 +141,21 @@ var OptionStreetsLayer = {
 }
 
 var OverlayMaps = {};
-
-AllLayer = [];
+var AllLayer = [];
 
 for (var Diagram in StreetsStyle)
 {
- var Layer = new L.GeoJSON.AJAX('data/StreetsData.' + Diagram + '.geojson', OptionStreetsLayer);
+ var FileName = 'data/StreetsData.' + Diagram + '.geojson';
+ var Layer = new L.GeoJSON.AJAX(FileName, OptionStreetsLayer);
+ //fetch('data/StreetsData.' + Diagram + '.geojson').then(response => response.json()).then(json => SearchJson(json));
  AllLayer.push(Layer);
  OverlayMaps[StreetsStyle[Diagram].Description[Lang]] = L.layerGroup([Layer.on('popupopen', onPopupOpenClick)]).addTo(Map);
 }
 
-
-//var List = L.layerGroup([StreetsLayer00, StreetsLayer01, StreetsLayer02]);
-
 L.control.layers(BaseMaps, OverlayMaps).addTo(Map);
 
-//var StreetsLayer = L.geoJson(StreetsData, OptionStreetsLayer);
-//StreetsLayer.addTo(Map);
+// дадаць зхаваны слой для пошуку
+L.geoJson(StreetsData, { style: { "opacity": 0, }, onEachFeature: function (feature, layer) { feature.layer = layer; } }).addTo(Map);
 
 //
 
@@ -210,13 +175,9 @@ function Translate()
  return _.defaultLocale;
 }
 
+// пры змене мовы прымусовы пераклад усяго
 function Change(e)
 {
- //console.log(LLL._overlaysList);
- //var elements = document.getElementsByClassName('leaflet-control-layers-overlays');
- //console.log(elements[0].childNodes);
- //for (var Item in elements[0].childNodes)
- // console.log(elements[0].childNodes[Item].innerText);
  PreviousLocale = _.defaultLocale;
  _.defaultLocale = Language[e.name];
  Lang = Translate();
@@ -233,27 +194,29 @@ function Change(e)
      Elements[Item].nextSibling.innerText = " " + StreetsStyle[Diagram].Description[Lang];
   }
  }
+ //
+ document.getElementsByClassName('search-input')[0].placeholder = _('Find');
 }
 
 Map.on('baselayerchange', Change);
 
-//
-
-/*function OptionShowResultFct(feature, container)
+// пошук
+function OptionShowResultFct(feature, container)
 {
- var LabelName = L.DomUtil.create('b', null, container);
- LabelName.innerHTML = feature.properties[Lang].Label;
- container.appendChild(L.DomUtil.create('br', null, container));
- container.appendChild(document.createTextNode(feature.properties[Lang].Description));
- container.appendChild(L.DomUtil.create('br', null, container));
- var StreetName = L.DomUtil.create('small', null, container);
- StreetName.innerHTML = '<i>' + feature.properties[Lang].Name + '</i>';
+ var Properties = feature.properties[Lang];
+ var Result = "<hr width='75%' align='left'>" + 
+ "<small>" + Properties.Name + "</small><br />";
+ if (!!Properties.Description)
+  Result += "<small><i>" + Properties.Description + "</i></small><br />";
+ if (!!Properties.Label)
+  Result += "<b>" + Properties.Label + "</b><br />";
+ L.DomUtil.create('div', 'result', container).innerHTML = Result;
 }
 
 var OptionsFuse = {
  position: 'topright',
- title: 'Chercher',
- placeholder: 'Найти улицу',
+ title: _('Search'),
+ placeholder: _('Find'),
  maxResultLength: 7,
  threshold: 0.2,
  showInvisibleFeatures: false,
@@ -261,8 +224,5 @@ var OptionsFuse = {
 };
 
 var fuseSearchCtrl = L.control.fuseSearch(OptionsFuse);
+fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description', 'be.Label', 'be.Name', 'be.Description']);
 Map.addControl(fuseSearchCtrl);
-fuseSearchCtrl.indexFeatures(List, ['ru.Label', 'ru.Name', 'ru.Description']);
-fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description']);
-fuseSearchCtrl.indexFeatures(StreetsData.features, ['popupContent']);
-*/

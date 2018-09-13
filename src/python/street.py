@@ -95,7 +95,7 @@ def GetWays(Member):
 # вярнуць карэктную нататку
 def GetNote(Note, Street, StartDate, Today):
  Note = Note.replace(";", "<br />")
- if StartDate is None:
+ if not StartDate:
   return Note
  elif Note == "":
   return f"{Street} ({Today} {StartDate})"
@@ -108,7 +108,7 @@ def GetNote(Note, Street, StartDate, Today):
 # вярнуць карэктны стыль
 def GetStyleGroup(Tag):
  Diagram = Tag.get('description:category:ru')
- if Diagram is not None:
+ if Diagram:
   return StreetsStyle[Diagram]
  elif 'name:etymology:wikidata' in Tag:
   return "diagram01"
@@ -117,11 +117,11 @@ def GetStyleGroup(Tag):
 
 
 # стварыць выніковы файл
-def CreateGeoJson(Streets, Style):
+def CreateGeoJson(Streets, Style=None):
  Features = []
  #
  for Street in Streets:
-  if Street['StyleGroup'] == Style:
+  if not Style or Style == Street['StyleGroup']:
    Relation = Street['Relation']
    logging.info(f"CreateGeoJson {Relation}")
    #logging.info("CreateGeoJson {}".format(Relation))
@@ -155,7 +155,8 @@ def ReadFromFile(FileName):
   _, Relation, _, _, _, _ = s.split(";")
   Street = GetStreet(Relation)
   #print(Street)
-  Result.append(Street)
+  if Street['Ways']:
+   Result.append(Street)
  #
  f.close()
  #
@@ -171,22 +172,28 @@ def ReadFromOSM(ID):
  for Member in Relation['member']:
   Street = GetStreet(Member['ref'])
   #print(Street)
-  Result.append(Street)
+  if Street['Ways']:
+   Result.append(Street)
  #
  return Result
 
 
 # захаваць js-geojson
-def Write(GeoJson, FileName, Style):
+def Write(GeoJson, FileName, Style=None):
  logging.info("Write to GeoJson")
- FileName1 = FileName + "." + Style
+ if Style:
+  FileName1 = FileName + "." + Style
+  Style1 = Style[-2:]
+ else:
+  FileName1 = FileName
+  Style1 = ""
  #
  f = open(os.path.join("data.geojson", FileName1 + ".geojson"), "w")
  f.write(GeoJson)
  f.close()
  #
  f = open(os.path.join("data.js", FileName1 + ".js"), "w")
- f.write("var StreetsData" + Style[-2:] + " = ")
+ f.write("var StreetsData" + Style1 + " = ")
  f.write(GeoJson)
  f.write(";")
  f.close()
@@ -199,9 +206,14 @@ logging.info("Start")
 FileName = "StreetsData"
 #Streets = ReadFromFile(FileName)
 Streets = ReadFromOSM(5708510)
+#
+GeoJson = CreateGeoJson(Streets)
+Write(GeoJson, FileName)
+#
 for Style in StreetsStyle:
  GeoJson = CreateGeoJson(Streets, StreetsStyle[Style])
  Write(GeoJson, FileName, StreetsStyle[Style])
+
 # GeoJson = CreateGeoJson(Streets, Style)
 # Write(GeoJson, FileName, Style)
 

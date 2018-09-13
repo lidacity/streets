@@ -172,7 +172,7 @@ L.Control.FuseSearch = L.Control.extend({
     },
     
     getOffset: function() {
-        console.log(this._panel.offsetWidth);
+        //console.log(this._panel.offsetWidth);
         if (this._panelOnLeftSide) {
             return - this.options.panelWidth;
         } else {

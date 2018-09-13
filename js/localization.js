@@ -36,6 +36,8 @@ _.registerLocale('ru',
  'Address': "г. Лида, Беларусь",
  'NotFound': "нет данных",
  'NotWiki': "в wiki отсутствует информация",
+ 'Find': "Найти улицу",
+ 'Search': "Поиск",
 });
 
 _.registerLocale('be',
@@ -47,6 +49,8 @@ _.registerLocale('be',
  'Address': "г. Ліда, Беларусь",
  'NotFound': "няма дадзеных",
  'NotWiki': "у wiki адсутнічае даведка",
+ 'Find': "Знайсці вуліцу",
+ 'Search': "Пошук",
 });
 
 _.defaultLocale = 'ru';
