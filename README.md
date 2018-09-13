@@ -28,4 +28,4 @@
 Применяемые технологии:
 * openstreetmap.org (josm)
 * python3 (osmapi, geojson, pywikibot)
-* javascript (leafletjs, ajax, juery, fuse, mv)
+* javascript (leafletjs, ajax, juery, fuse, mw)
