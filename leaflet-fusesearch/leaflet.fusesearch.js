@@ -1,4 +1,5 @@
-﻿// From http://www.tutorialspoint.com/javascript/array_map.htm
+﻿// From https://github.com/naomap/leaflet-fusesearch
+// change by dzmitry@lidacity.by, 2016-2018
 
 if (!Array.prototype.map)
 {
@@ -251,78 +252,6 @@ L.Control.FuseSearch = L.Control.extend({
 
         return resultItem;
     },
-
-/*  _searchInLayer: function(layer, retRecords, propName) {
-    var self = this, loc;
-
-    if(layer instanceof L.Control.Search.Marker) return;
-
-    if(layer instanceof L.Marker || layer instanceof L.CircleMarker)
-    {
-      if(self._getPath(layer.options,propName))
-      {
-        loc = layer.getLatLng();
-        loc.layer = layer;
-        retRecords[ self._getPath(layer.options,propName) ] = loc;
-      }
-      else if(self._getPath(layer.feature.properties,propName))
-      {
-        loc = layer.getLatLng();
-        loc.layer = layer;
-        retRecords[ self._getPath(layer.feature.properties,propName) ] = loc;
-      }
-      else {
-        //throw new Error("propertyName '"+propName+"' not found in marker"); 
-        console.warn("propertyName '"+propName+"' not found in marker"); 
-      }
-    }
-    else if(layer instanceof L.Path || layer instanceof L.Polyline || layer instanceof L.Polygon)
-    {
-      if(self._getPath(layer.options,propName))
-      {
-        loc = layer.getBounds().getCenter();
-        loc.layer = layer;
-        retRecords[ self._getPath(layer.options,propName) ] = loc;
-      }
-      else if(self._getPath(layer.feature.properties,propName))
-      {
-        loc = layer.getBounds().getCenter();
-        loc.layer = layer;
-        retRecords[ self._getPath(layer.feature.properties,propName) ] = loc;
-      }
-      else {
-        //throw new Error("propertyName '"+propName+"' not found in shape"); 
-        console.warn("propertyName '"+propName+"' not found in shape"); 
-      }
-    }
-    else if(layer.hasOwnProperty('feature'))//GeoJSON
-    {
-      if(layer.feature.properties.hasOwnProperty(propName))
-      {
-        if(layer.getLatLng && typeof layer.getLatLng === 'function') {
-          loc = layer.getLatLng();
-          loc.layer = layer;			
-          retRecords[ layer.feature.properties[propName] ] = loc;
-        } else if(layer.getBounds && typeof layer.getBounds === 'function') {
-          loc = layer.getBounds().getCenter();
-          loc.layer = layer;			
-          retRecords[ layer.feature.properties[propName] ] = loc;
-        } else {
-          console.warn("Unknown type of Layer");
-        }
-      }
-      else {
-        //throw new Error("propertyName '"+propName+"' not found in feature");
-        console.warn("propertyName '"+propName+"' not found in feature"); 
-      }
-    }
-    else if(layer instanceof L.LayerGroup)
-    {
-      layer.eachLayer(function (layer) {
-        self._searchInLayer(layer, retRecords, propName);
-      });
-    }
-  },*/
 
 });
 
