@@ -1,32 +1,29 @@
 # Streets
 
-Город Лида. Их именами названы улицы
+Сайт проекта [Город Лида. Их именами названы улицы](http://streets.lidacity.by/)
+
 Проект преобразован и оптимизирован для города Лиды, Беларусь.
 
-###Использованы различные данные, а именно:
-#### как первоисточник 
-* http://habrahabr.ru/post/260893/
-* https://kogor.github.io//Streets-of-Valour-and-Victory/
-* https://github.com/KoGor/Streets-of-Valour-and-Victory
-#### как изучение
-* http://news.tut.by/society/398404.html
-* https://leafletjs.com/
-* https://www.mediawiki.org/wiki/API:Main_page/ru
-* https://ru.wikipedia.org/wiki/Служебная:ApiSandbox#action=query&format=json&meta=siteinfo&siprop=namespaces
-#### как основные данные
+####Использованые данные:
 * Праект Карта горада Ліда. Частка "Іх імёнамі названы вуліцы", 2003-2005
-* wikipedia.org
-* wikidata.org
-* josm.openstreetmap.de
-* openstreetmap.org
-* python3 + osmapi + geojson + pywikibot + mv
 * Урбанонімы горада Ліды. В. Сліўкін "Лідскі летапісец" № 22, 23-2
-* Улицы Лиды или лидские годонимы. Cтарший научный сотрудник Лидского музея Сливкин Валерий Васильевич. http://www.lida.info/ulicy-lidy-ili-lidskie-godonimy/
- и другие...
+* [Улицы Лиды или лидские годонимы](http://www.lida.info/ulicy-lidy-ili-lidskie-godonimy/). Cтарший научный сотрудник Лидского музея Сливкин Валерий Васильевич.
+* и другие...
 
 Увы, не все персоны представлены на wikidata, буду рад если про них создадут страницу на wikipedia, и я с удовольствием добавлю их в проект.
 
 Если вы обнаружили ошибку, есть замечание, или что-нибудь ещё, свяжитесь dzmitry@lidacity.by
 
 ## Технические подробности
-Для отрисовки карты используется библиотека [leaflet.js](http://leafletjs.com/) с рядом плагинов.
+Исходные данные:
+* [Streets-of-Valour-and-Victory](https://github.com/KoGor/Streets-of-Valour-and-Victory), http://habrahabr.ru/post/260893/
+* [wikidata.org](https://www.mediawiki.org/wiki/API:Main_page/ru)
+* [wikipedia.org](https://ru.wikipedia.org/wiki/Служебная:ApiSandbox#action=query&format=json&meta=siteinfo&siprop=namespaces)
+Для отрисовки карты используется библиотека [leaflet.js](http://leafletjs.com/) с рядом плагинов:
+* модифицированный [leaflet-fusesearch](https://github.com/naomap/leaflet-fusesearch/)
+* [TileLayer.Grayscale](https://github.com/Zverik/leaflet-grayscale/)
+* [L.EasyButton](https://github.com/CliffCloud/Leaflet.EasyButton/)
+Применяемые технологии:
+* openstreetmap.org (josm)
+* python3 (osmapi, geojson, pywikibot)
+* javascript (leafletjs, ajax, juery, fuse, mv)

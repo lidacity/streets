@@ -175,6 +175,7 @@ function Translate()
  return _.defaultLocale;
 }
 
+
 // пры змене мовы прымусовы пераклад усяго
 function Change(e)
 {
@@ -199,6 +200,7 @@ function Change(e)
 }
 
 Map.on('baselayerchange', Change);
+
 
 // пошук
 function OptionShowResultFct(feature, container)
