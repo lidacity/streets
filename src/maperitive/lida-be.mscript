@@ -1,6 +1,0 @@
-use-script-dir
-use-ruleset location=Rules\ad47dz-be.mrules
-apply-ruleset
-set-geo-bounds 25.2,53.85,25.4,53.96
-download-osm-overpass
-generate-tiles minzoom=11 maxzoom=18
