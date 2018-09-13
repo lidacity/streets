@@ -232,3 +232,4 @@ var OptionsFuse = {
 var fuseSearchCtrl = L.control.fuseSearch(OptionsFuse);
 fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description', 'be.Label', 'be.Name', 'be.Description']);
 Map.addControl(fuseSearchCtrl);
+
