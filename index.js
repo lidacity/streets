@@ -10,9 +10,7 @@ var OptionLayer = {
 
 var Lang = Translate();
 
-var Host = "http://tiles.lidacity.by/";
-if (location.hostname == "localhost")
- Host = "tiles.";
+var Host = (location.hostname == "localhost") ? Host = "http://localhost/tiles/" : "http://tiles.lidacity.by/";
 
 var BaseMaps = {
  "Русский язык": L.tileLayer.grayscale(Host + 'ru/{z}/{x}/{y}.png', OptionLayer),
@@ -90,13 +88,9 @@ function JsonEachFeature(feature, layer)
 }
 
 
-function Slice(Text)
+function Slice(Text, Length=256)
 {
- var Length = 256;
- if (Text.length > Length)
-  return Text.slice(0, Length) + "…";
- else
-  return Text;
+ return (Text.length > Length) ? Text.slice(0, Length) + "…" : Text;
 }
 
 function onPopupOpenClick(e)
@@ -124,16 +118,8 @@ function onPopupOpenClick(e)
  queryWikipedia(function (x) {
   var Result = x.query.pages[0];
   //console.log('mw', Result);
-  if (!!Result.thumbnail)
-   Img = "<img alt='" + Result.title + "' src='" + Result.thumbnail.source + "' />";
-  else
-   Img = "";
-  //
-  var Text;
-  if (!!Result.extract)
-   Text = Img + "<br />" + Slice(Result.extract);
-  else
-   Text = "<font color='#DDD'><del>" + _('NotWiki') + "</del></font>";
+  var Img = (!!Result.thumbnail) ? "<img alt='" + Result.title + "' src='" + Result.thumbnail.source + "' />" : "";
+  var Text = (!!Result.extract) ? Img + "<br />" + Slice(Result.extract) : "<font color='#DDD'><del>" + _('NotWiki') + "</del></font>";
   setTimeout(function (Text) { document.getElementById('wiki').innerHTML = Text; }, 200, Text);
  });
 }
@@ -176,6 +162,7 @@ function Translate()
 {
  document.getElementById('MapHeader').innerHTML = "<strong>" + _('City') + "</strong>. " + _('About');
  document.getElementById('MainHeader').innerHTML = _('City') + ". " + _('About');
+ document.getElementsByClassName('search-input')[0].placeholder = _('Find');
  return _.defaultLocale;
 }
 
@@ -199,8 +186,6 @@ function Change(e)
      Elements[Item].nextSibling.innerText = " " + StreetsStyle[Diagram].Description[Lang];
   }
  }
- //
- document.getElementsByClassName('search-input')[0].placeholder = _('Find');
 }
 
 Map.on('baselayerchange', Change);
@@ -232,4 +217,3 @@ var OptionsFuse = {
 var fuseSearchCtrl = L.control.fuseSearch(OptionsFuse);
 fuseSearchCtrl.indexFeatures(StreetsData.features, ['ru.Label', 'ru.Name', 'ru.Description', 'be.Label', 'be.Name', 'be.Description']);
 Map.addControl(fuseSearchCtrl);
-
