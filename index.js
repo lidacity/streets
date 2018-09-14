@@ -162,7 +162,6 @@ function Translate()
 {
  document.getElementById('MapHeader').innerHTML = "<strong>" + _('City') + "</strong>. " + _('About');
  document.getElementById('MainHeader').innerHTML = _('City') + ". " + _('About');
- document.getElementsByClassName('search-input')[0].placeholder = _('Find');
  return _.defaultLocale;
 }
 
@@ -186,6 +185,8 @@ function Change(e)
      Elements[Item].nextSibling.innerText = " " + StreetsStyle[Diagram].Description[Lang];
   }
  }
+ //
+ document.getElementsByClassName('search-input')[0].placeholder = _('Find');
 }
 
 Map.on('baselayerchange', Change);
