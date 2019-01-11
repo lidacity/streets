@@ -12,6 +12,7 @@ var StreetsStyle = {
   'diagram10': { 'color': "#ff950e", 'Description': {'ru': "Партизаны и подпольщики", 'be': "Партызаны і падпольшчыкі", }, },
   'diagram11': { 'color': "#c5000b", 'Description': {'ru': "Участники боев за город", 'be': "Удзельнікі баёў за горад", }, },
   'diagram12': { 'color': "#0084d1", 'Description': {'ru': "Передовики производства", 'be': "Перадавікі вытворчасці", }, },
-  'diagram13': { 'color': "#7FFFD4", 'Description': {'ru': "Города", 'be': "Гарады", }, },
+  'diagram13': { 'color': "#7FFFD4", 'Description': {'ru': "Города и реки", 'be': "Гарады і рэкі", }, },
   'diagram14': { 'color': "#CD853F", 'Description': {'ru': "Даты", 'be': "Даты", }, },
+  'diagram15': { 'color': "#CD853F", 'Description': {'ru': "Животные и растения", 'be': "Жывёлы і расліны", }, },
  };

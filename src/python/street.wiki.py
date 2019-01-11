@@ -11,7 +11,7 @@ OSM = osmapi.OsmApi()
 
 # вярнуць некаторыя параметры вуліцы
 def GetStreet(ID):
- logging.info("GetStreet {}".format(ID))
+ logging.info(f"GetStreet {ID}")
  #
  Relation = OSM.RelationGet(ID)
  #
@@ -60,8 +60,8 @@ def Write(Streets, ID, FileName):
  Keys = sorted(Streets.keys())
  #
  f = open(FileName, "w")
- f.write("на 01.12.2015 {{relation|{}}}\n".format(ID))
- f.write("\n".format())
+ f.write(f"на 01.12.2015 {{relation|{ID}}}\n")
+ f.write(f"\n")
 
  CurrentChar = ""
  for Key in Keys:
@@ -76,12 +76,12 @@ def Write(Streets, ID, FileName):
     f.write("\n")
    CurrentChar = Char
    #
-   f.write("={}=\n".format(Char))
+   f.write(f"={Char}=\n")
    f.write("{| class='wikitable' border='1' cellspacing='0' cellpadding='2'\n")
    f.write("! Наименование (ru) || Наименование (be) || WikiData || Отношение || Описание\n")
   #
-  f.write("|-\n")
-  f.write("|{} || {} || {{{{wikidata|{}}}}} || {{{{relation|{}}}}} || {}\n".format(Street['name:ru'], Street['name:be'], Street['name:etymology:wikidata'], Street['relation'], Street['description']))
+  f.write(f"|-\n")
+  f.write(f"|{Street['name:ru']} || {Street['name:be']} || {{{{wikidata|{Street['name:etymology:wikidata']}}}}} || {{{{relation|{Street['relation']}}}}} || {Street['description']}\n")
   #
  f.write("|}\n")
  f.write("\n")
